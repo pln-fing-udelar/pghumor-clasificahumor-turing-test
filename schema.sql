@@ -13,11 +13,13 @@ CREATE TABLE accounts
 CREATE TABLE tweets
 (
     tweet_id   BIGINT UNSIGNED                   NOT NULL,
+    question   VARCHAR(1120)                     NOT NULL, # 1120 = max length of a tweet (280) * max length in bytes of a utf8 code point (4).
     text       VARCHAR(1120)                     NOT NULL, # 1120 = max length of a tweet (280) * max length in bytes of a utf8 code point (4).
     account_id BIGINT UNSIGNED                   NOT NULL,
     origin     ENUM ('hose', 'humorous account') NOT NULL,
     lang       ENUM ('es', 'en')                 NOT NULL,
     weight     TINYINT UNSIGNED DEFAULT 1,
+    artificial BOOL default 0,
     PRIMARY KEY (tweet_id),
     FOREIGN KEY (account_id) REFERENCES accounts (account_id)
 ) ENGINE InnoDB;

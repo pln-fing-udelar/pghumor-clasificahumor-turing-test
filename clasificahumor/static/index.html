@@ -24,7 +24,7 @@
   <meta name="twitter:site" content="@PLN_UdelaR"/>
   <meta name="twitter:creator" content="@PLN_UdelaR"/>
 
-  <title>Clasificá tweets y divertite</title>
+  <title>¿Humano o ChatGPT?</title>
 
   <link href="css/normalize.css" rel="stylesheet"/>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
@@ -86,25 +86,25 @@
 <div class="main-content">
   <div class="container">
     <div id="home-content" class="content">
-      <h1>Clasificá tweets y divertite</h1>
+      <h1>¿Humano o ChatGPT? 🤔</h1>
 
       <div id="tweet">
         <p id="tweet-text"></p>
-        <img id="tweet-logo" src="img/twitter.ico" alt="Twitter"/>
+        <!-- <img id="tweet-logo" src="img/twitter.ico" alt="Twitter"/> -->
       </div>
 
       <div id="form-container">
-        <p id="question">¿El tweet pretende ser humorístico?</p>
+        <p id="question">¿Esta respuesta fue escrita por un humano, o generada por ChatGPT?</p>
 
         <ul id="answers">
-          <li class="answer">
+          <li class="answer" style="display: none">
             <label id="is-offensive-label" for="is-offensive">
               <input id="is-offensive" type="checkbox"/>
               Ofensivo
             </label>
           </li>
 
-          <li id="humor-answer" class="answer">
+          <!-- <li id="humor-answer" class="answer">
             <div id="humor-container">
               <button id="humor" type="button" class="btn btn-lg btn-default btn-answer">Sí</button>
               <div id="toolbox"></div>
@@ -116,13 +116,17 @@
                 <button id="vote-5" class="vote"><span class="legend-vote">¡Buenísimo!</span></button>
               </div>
             </div>
+          </li> -->
+
+          <li id="humor-answer" class="answer">
+            <button id="vote-1" type="button" class="btn btn-lg btn-default btn-answer">Humano</button>
           </li>
 
           <li id="not-humor-answer" class="answer">
-            <button id="not-humor" type="button" class="btn btn-lg btn-default btn-answer">No</button>
+            <button id="not-humor" type="button" class="btn btn-lg btn-default btn-answer">ChatGPT</button>
           </li>
 
-          <li class="answer">
+          <li class="answer" style="display: none">
             <button id="skip" type="button" class="btn btn-lg btn-link btn-answer">Saltear</button>
           </li>
         </ul>

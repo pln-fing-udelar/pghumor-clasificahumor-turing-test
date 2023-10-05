@@ -13,7 +13,7 @@ TYPE_TWEET_ID = Union[int, str]
 VOTE_CHOICES = frozenset(["1", "2", "3", "4", "5", "x", "n"])
 
 STATEMENT_RANDOM_LEAST_VOTED_UNSEEN_TWEETS = \
-    sqlalchemy.sql.text("SELECT t.tweet_id, text"
+    sqlalchemy.sql.text("SELECT t.tweet_id, question, text, artificial"
                         " FROM tweets t"
                         "   LEFT JOIN (SELECT tweet_id FROM votes WHERE session_id = :session_id) a"
                         "     ON t.tweet_id = a.tweet_id"
@@ -23,7 +23,7 @@ STATEMENT_RANDOM_LEAST_VOTED_UNSEEN_TWEETS = \
                         " GROUP BY t.tweet_id, weight"
                         " ORDER BY weight DESC, COUNT(b.tweet_id), RAND()"
                         " LIMIT :limit")
-STATEMENT_RANDOM_TWEETS = sqlalchemy.sql.text("SELECT t.tweet_id, text"
+STATEMENT_RANDOM_TWEETS = sqlalchemy.sql.text("SELECT t.tweet_id, question, text, artificial"
                                               " FROM tweets t"
                                               " ORDER BY RAND()"
                                               " LIMIT :limit")
@@ -132,8 +132,8 @@ def random_least_voted_unseen_tweets(
         result = connection.execute(STATEMENT_RANDOM_LEAST_VOTED_UNSEEN_TWEETS,
                                     {"session_id": session_id, "limit": batch_size,
                                      "ignore_tweet_ids": ",".join(tweet_id for tweet_id in ignore_tweet_ids)})
-        for id_, text in result.fetchall():
-            yield {"id": id_, "text": text}
+        for id_, question, text, artificial in result.fetchall():
+            yield {"id": id_, "question": question, "text": text, "artificial": artificial}
 
 
 def random_tweets(batch_size: int) -> Iterator[TYPE_TWEET]:
@@ -147,8 +147,8 @@ def random_tweets(batch_size: int) -> Iterator[TYPE_TWEET]:
     """
     with engine.connect() as connection:
         result = connection.execute(STATEMENT_RANDOM_TWEETS, {"limit": batch_size})
-        for id_, text in result.fetchall():
-            yield {"id": id_, "text": text}
+        for id_, question, text, artificial in result.fetchall():
+            yield {"id": id_, "question": question, "text": text, "artificial": artificial}
 
 
 def add_vote(session_id: str, tweet_id: TYPE_TWEET_ID, vote: str, is_offensive: bool) -> None:

@@ -98,7 +98,7 @@ function showTweet() {
     console.error("No hay tweets para mostrar.");
   } else {
     $tweet.fadeOut(200, () => {
-      $tweet.html(emoji.replace_unified(tweets[index].text.replace(/\n/mg, "<br/>"))).text();
+      $tweet.html(emoji.replace_unified((tweets[index].question + '\n' + tweets[index].text).replace(/\n/mg, "<br/>"))).text();
       $tweet.fadeIn(200);
     });
   }
@@ -148,18 +148,18 @@ function setUiListeners() {
   $humor.hover(() => $votesAndToolbox.css("display", ""));
 
   $notHumor.click(() => {
-    vote("x");
+    vote("x", tweets[index].artificial);
     $notHumor.addClass("no-hover");
   });
 
   $notHumor.on("mousemove mousedown", () => $notHumor.removeClass("no-hover"));
 
-  $vote1.click(() => vote("1"));
-  $vote2.click(() => vote("2"));
-  $vote3.click(() => vote("3"));
-  $vote4.click(() => vote("4"));
-  $vote5.click(() => vote("5"));
-  $skip.click(() => vote("n"));
+  $vote1.click(() => vote("1",tweets[index].artificial));
+  $vote2.click(() => vote("2",tweets[index].artificial));
+  $vote3.click(() => vote("3",tweets[index].artificial));
+  $vote4.click(() => vote("4",tweets[index].artificial));
+  $vote5.click(() => vote("5",tweets[index].artificial));
+  $skip.click(() => vote("n",tweets[index].artificial));
 
   $("#answers button").mouseup(e => $(e.currentTarget).blur());
 
@@ -174,7 +174,7 @@ function setUiListeners() {
   });
 }
 
-function vote(voteOption) {
+function vote(voteOption, artificial) {
   const oldIndex = index;
   index = (index + 1) % tweets.length;
 
@@ -189,7 +189,7 @@ function vote(voteOption) {
 
   showTweet();
 
-  $.mdtoast(toastText(voteOption), {duration: 3000});
+  $.mdtoast(toastText(voteOption, artificial), {duration: 3000, position: "mid-center", type: (voteOption === "x" && artificial === 1) || (voteOption !== "x" && artificial === 0) ? "success" : "error"});
 
   $votesAndToolbox.fadeOut();
 
@@ -201,13 +201,13 @@ function vote(voteOption) {
   }
 }
 
-function toastText(voteOption) {
+function toastText(voteOption, artificial) {
   if (voteOption === "x") {
-    return "Clasificado como no humorístico. ¡Gracias!";
+    return artificial ? "CORRECTO!" : "Incorrecto!";
   } else if (voteOption === "n") {
     return "Tweet salteado. ¡Gracias!";
   } else {
-    return `Clasificado como ${removeNonWords(voteCodeToText[Number(voteOption)]).toLowerCase()}. ¡Gracias!`;
+    return artificial ? "Incorrecto!" : "CORRECTO!";
   }
 }
 

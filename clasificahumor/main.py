@@ -84,7 +84,7 @@ def tweets_route() -> Response:
 
 @app.route("/vote", methods=["POST"])
 def vote_and_get_new_tweet_route() -> Response:
-    session_id = _get_session_id()
+    session_id = _generate_id()
 
     if "tweet_id" in request.form and "vote" in request.form and "is_offensive" in request.form:
         is_offensive = request.form["is_offensive"].lower() == "true"
