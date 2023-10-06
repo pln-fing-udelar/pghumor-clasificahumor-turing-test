@@ -17,7 +17,11 @@ let $isOffensive;
 let $voteCount;
 let $consent;
 let $consentForm;
+let $correct;
+let $correctModal;
 let emoji;
+var audio_correct = new Audio('audio/correct.mp3');
+var audio_incorrect = new Audio('audio/incorrect.mp3');
 
 let legendsShownForFirstTime = false;
 
@@ -91,6 +95,8 @@ function setupElements() {
   $voteCount = $("#vote-count");
   $consent = $("#consent");
   $consentForm = $("#consent form");
+  $correct = $("#correct");
+  $correctModal = $("#about");
 }
 
 function showTweet() {
@@ -189,7 +195,15 @@ function vote(voteOption, artificial) {
 
   showTweet();
 
-  $.mdtoast(toastText(voteOption, artificial), {duration: 3000, position: "mid-center", type: (voteOption === "x" && artificial === 1) || (voteOption !== "x" && artificial === 0) ? "success" : "error"});
+  $correct.html(toastText(voteOption, artificial)).text();
+
+  if ((voteOption === "x" && artificial === 1) || (voteOption !== "x" && artificial === 0)) {
+    $correctModal.css("background-color", "#4CAF50");
+    audio_correct.play();
+  } else {
+    $correctModal.css("background-color", "#f44336");
+    audio_incorrect.play();
+  }
 
   $votesAndToolbox.fadeOut();
 

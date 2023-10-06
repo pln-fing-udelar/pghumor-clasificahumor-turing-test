@@ -53,6 +53,20 @@ h2 {
   word-wrap: break-word;
 }
 
+#correct {
+  color: white;
+  cursor: text;
+  font-family: Helvetica, Roboto, "Segoe UI", Calibri, sans-serif;
+  font-size: 56px;
+  line-height: 1.4;
+  margin: auto;
+  white-space: pre-wrap;
+  width: 100%;
+  margin-top: 40vh;
+  word-wrap: break-word;
+  text-align: center;
+}
+
 #form-container {
   display: inline-grid;
   text-align: left;
