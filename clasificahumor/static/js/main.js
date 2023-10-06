@@ -98,7 +98,7 @@ function showTweet() {
     console.error("No hay tweets para mostrar.");
   } else {
     $tweet.fadeOut(200, () => {
-      $tweet.html(emoji.replace_unified((tweets[index].question + '\n' + tweets[index].text).replace(/\n/mg, "<br/>"))).text();
+      $tweet.html(emoji.replace_unified((tweets[index].question + "<hr/>" + tweets[index].text).replace(/\n/mg, "<br/>"))).text();
       $tweet.fadeIn(200);
     });
   }
