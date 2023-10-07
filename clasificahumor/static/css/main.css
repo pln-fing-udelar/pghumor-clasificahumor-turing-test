@@ -42,7 +42,7 @@ h2 {
 }
 
 #tweet-text {
-  color: #1c2022;
+  /* color: #1c2022; */
   cursor: text;
   font-family: Helvetica, Roboto, "Segoe UI", Calibri, sans-serif;
   font-size: 18px;
@@ -66,6 +66,11 @@ h2 {
   margin-top: 40vh;
   word-wrap: break-word;
   text-align: center;
+}
+
+#streak-msg-modal {
+  text-align: center;
+  color: white;
 }
 
 #form-container {
@@ -203,4 +208,24 @@ footer {
 .wa_btn {
   display: none;
   vertical-align: bottom;
+}
+
+.title-with-streak {
+  display: flex;
+  align-items: center;
+}
+
+.title-using-streak {
+  text-align: center;
+  width: 100%;
+}
+
+.streak {
+  position: absolute;
+  right: 5vw;
+}
+
+.dark-mode {
+  background-color: black;
+  color: white;
 }

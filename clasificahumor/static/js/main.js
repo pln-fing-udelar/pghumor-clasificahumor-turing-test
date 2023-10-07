@@ -19,7 +19,11 @@ let $consent;
 let $consentForm;
 let $correct;
 let $correctModal;
+let $streakMsg;
+let $streakMsgModal;
+let $theme;
 let emoji;
+let streak = 0;
 var audio_correct = new Audio('audio/correct.mp3');
 var audio_incorrect = new Audio('audio/incorrect.mp3');
 
@@ -35,6 +39,18 @@ const voteCodeToText = {
 
 let tweets = [];
 let index = 0;
+
+// Config streak limit
+if (sessionStorage.getItem("streak-limit") === null) {
+  sessionStorage.setItem("streak-limit", 7);
+}
+
+const STREAK_LIMIT = sessionStorage.getItem("streak-limit");
+
+// Config theme (dark/light)
+if (sessionStorage.getItem("theme") === null) {
+  sessionStorage.setItem("theme", "dark");
+}
 
 function getParameterByName(name, url = window.location.href) {
   name = name.replace(/[\[\]]/g, "\\$&");
@@ -60,12 +76,21 @@ $(document).ready(main);
 function main() {
   setupSentry();
   setupElements();
+  setupTheme();
   setupPlaceload();
   setupEmojiConverter();
   getRandomTweets();
   setUiListeners();
   moveToolboxIfOutside();
   setupProlificSessionIfNeeded();
+}
+
+function setupTheme() {
+  if (sessionStorage.getItem("theme") === "dark") {
+    $theme.addClass("dark-mode");
+  } else {
+    $theme.removeClass("dark-mode");
+  }
 }
 
 function setupSentry() {
@@ -97,6 +122,9 @@ function setupElements() {
   $consentForm = $("#consent form");
   $correct = $("#correct");
   $correctModal = $("#about");
+  $streakMsg = $("#streak-msg");
+  $streakMsgModal = $("#streak-msg-modal");
+  $theme = $("#theme");
 }
 
 function showTweet() {
@@ -108,6 +136,9 @@ function showTweet() {
       $tweet.fadeIn(200);
     });
   }
+
+  // Update streak
+  $streakMsg.html(`Racha: ${streak}`).text();
 }
 
 function setupPlaceload() {
@@ -198,11 +229,22 @@ function vote(voteOption, artificial) {
   $correct.html(toastText(voteOption, artificial)).text();
 
   if ((voteOption === "x" && artificial === 1) || (voteOption !== "x" && artificial === 0)) {
+    streak++;
     $correctModal.css("background-color", "#4CAF50");
     audio_correct.play();
   } else {
+    streak = 0;
     $correctModal.css("background-color", "#f44336");
     audio_incorrect.play();
+  }
+
+  $streakMsg.html(`Racha: ${streak}`).text();
+  if (streak >= STREAK_LIMIT) {
+    $streakMsgModal.html(`¡Lo lograste! Racha: ${streak}`).text();
+    $streakMsgModal.css("font-weight", "bold");
+  } else {
+    $streakMsgModal.html(`Racha: ${streak}`).text();
+    $streakMsgModal.css("font-weight", "");
   }
 
   $votesAndToolbox.fadeOut();

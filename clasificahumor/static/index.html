@@ -83,11 +83,13 @@
   })(document, "script", "twitter-wjs");
 </script>
 
-<div class="main-content">
+<div class="main-content" id="theme">
   <div class="container">
     <div id="home-content" class="content">
-      <h1>¿Humano o máquina? 🤔</h1>
-
+      <div class="title-with-streak">
+        <h1 class="title-using-streak">¿Humano o máquina? 🤔</h1>
+        <h4 class="streak" id="streak-msg"></h4>
+      </div>
       <div id="tweet">
         <p id="tweet-text"></p>
         <!-- <img id="tweet-logo" src="img/twitter.ico" alt="Twitter"/> -->
@@ -310,6 +312,7 @@
 
 <div id="about" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="about-label">
   <h4 class="modal-title" id="correct"></h4>
+  <h4 class="tweet-text" id="streak-msg-modal"></h4>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
